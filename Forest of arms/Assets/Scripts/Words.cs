@@ -1,18 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Words : MonoBehaviour
 {
     public Data data;
     public List<GameObject> LetterList;
-    string[] answers = { "кот", "ток" };
-    string word ="";
+    public GameObject panel;
+    string[] answers = { "кот", "ток","кто" };
+    string word = "";
+    Text[] texts;
+    char[,] textAnsw;
+    char[] letters;
     void Start()
     {
         data = new Data('a', answers);
         Letters[] lett = FindObjectsOfType<Letters>();
-        foreach(Letters myLett in lett)
+        texts = panel.GetComponentsInChildren<Text>();
+        textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
+        for (int i = 0, n =0; i < answers.Length; i++)
+        {
+            letters = answers[i].ToCharArray();
+            for (int j = 0; j < answers[i].Length; j++, n++)
+            {
+                textAnsw[i, j] = letters[j];
+                texts[n].text = textAnsw[i, j].ToString();
+                texts[n].gameObject.SetActive(false);
+            }
+        }
+        foreach (Letters myLett in lett)
         {
             myLett.data = data;
         }
@@ -21,23 +38,35 @@ public class Words : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0))
         {
             var touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
             AddLetter(col);
         }
-        else if(LetterList.Count !=0)
+        else if (LetterList.Count != 0)
         {
-            foreach(GameObject myLett in LetterList)
+            int temp = 0;
+            foreach (GameObject myLett in LetterList)
             {
                 Letters lt = myLett.GetComponent<Letters>();
                 word += lt.letter;
             }
-            print(word);
+            for (int i = 0; i < answers.Length; i++)
+            {
+                if (answers[i] == word)
+                {
+                    for (int n = 0; n < answers[i].Length; n++)
+                    {
+                        texts[temp].gameObject.SetActive(true);
+                        temp++;
+                    }
+                }
+                temp += answers[i].Length;
+            }
             ClearList();
         }
-        
+
     }
     void ClearList()
     {
@@ -62,19 +91,19 @@ public class Words : MonoBehaviour
                     LetterList.Add(obj);
                 }
 
-/*                foreach (GameObject myBase in LetterList)
-                {
-                    LineRenderer lr = myBase.GetComponent<LineRenderer>();
-                    if (bs.data == data)
-                    {
-                        lr.SetPosition(0, myBase.transform.position);
-                        lr.SetPosition(1, EndPoint.transform.position);
-                    }
-                    else
-                    {
-                        lr.SetPosition(1, myBase.transform.position);
-                    }
-                }*/
+                /*                foreach (GameObject myBase in LetterList)
+                                {
+                                    LineRenderer lr = myBase.GetComponent<LineRenderer>();
+                                    if (bs.data == data)
+                                    {
+                                        lr.SetPosition(0, myBase.transform.position);
+                                        lr.SetPosition(1, EndPoint.transform.position);
+                                    }
+                                    else
+                                    {
+                                        lr.SetPosition(1, myBase.transform.position);
+                                    }
+                                }*/
             }
         }
     }
