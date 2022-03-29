@@ -8,7 +8,7 @@ public class Words : MonoBehaviour
     public Data data;
     public List<GameObject> LetterList;
     public GameObject panel;
-    string[] answers = { "кот", "ток","кто" };
+    string[] answers = { "кот", "ток", "кто" };
     string word = "";
     Text[] texts;
     char[,] textAnsw;
@@ -19,7 +19,7 @@ public class Words : MonoBehaviour
         Letters[] lett = FindObjectsOfType<Letters>();
         texts = panel.GetComponentsInChildren<Text>();
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
-        for (int i = 0, n =0; i < answers.Length; i++)
+        for (int i = 0, n = 0; i < answers.Length; i++)
         {
             letters = answers[i].ToCharArray();
             for (int j = 0; j < answers[i].Length; j++, n++)
@@ -70,11 +70,11 @@ public class Words : MonoBehaviour
     }
     void ClearList()
     {
-        /*foreach (GameObject myBase in LetterList)
+        for (int i = 0; i < LetterList.Count - 1; i++)
         {
-            LineRenderer lr = myBase.GetComponent<LineRenderer>();
-            lr.SetPosition(1, myBase.transform.position);
-        }*/
+            LineRenderer lr = LetterList[i].GetComponent<LineRenderer>();
+            lr.SetPosition(1, LetterList[i].transform.position);
+        }
         LetterList.Clear();
         word = null;
     }
@@ -91,19 +91,12 @@ public class Words : MonoBehaviour
                     LetterList.Add(obj);
                 }
 
-                /*                foreach (GameObject myBase in LetterList)
-                                {
-                                    LineRenderer lr = myBase.GetComponent<LineRenderer>();
-                                    if (bs.data == data)
-                                    {
-                                        lr.SetPosition(0, myBase.transform.position);
-                                        lr.SetPosition(1, EndPoint.transform.position);
-                                    }
-                                    else
-                                    {
-                                        lr.SetPosition(1, myBase.transform.position);
-                                    }
-                                }*/
+                for (int i = 0; i < LetterList.Count - 1; i++)
+                {
+                    LineRenderer lr = LetterList[i].GetComponent<LineRenderer>();
+                    lr.SetPosition(0, LetterList[i].transform.position);
+                    lr.SetPosition(1, LetterList[i + 1].transform.position);
+                }
             }
         }
     }
