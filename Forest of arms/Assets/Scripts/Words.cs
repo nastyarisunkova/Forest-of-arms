@@ -8,14 +8,15 @@ public class Words : MonoBehaviour
     public Data data;
     public List<GameObject> LetterList;
     public GameObject panel;
-    string[] answers = { "кот", "ток", "кто" };
+    string[] answers;
     string word = "";
     Text[] texts;
     char[,] textAnsw;
     char[] letters;
     void Start()
     {
-        data = new Data('a', answers);
+        data = new Data();
+        answers = data.answers;
         Letters[] lett = FindObjectsOfType<Letters>();
         texts = panel.GetComponentsInChildren<Text>();
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
@@ -29,13 +30,9 @@ public class Words : MonoBehaviour
                 texts[n].gameObject.SetActive(false);
             }
         }
-        foreach (Letters myLett in lett)
-        {
-            myLett.data = data;
-        }
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButton(0))
@@ -86,7 +83,7 @@ public class Words : MonoBehaviour
             var bs = obj.GetComponent<Letters>();
             if (bs != null)
             {
-                if ((bs.data == data) && (!LetterList.Contains(obj)))
+                if (!LetterList.Contains(obj))
                 {
                     LetterList.Add(obj);
                 }
@@ -105,11 +102,6 @@ public class Words : MonoBehaviour
 public class Data
 {
     public char word;
-    string[] answers;
-    public Data(char word, string[] answers)
-    {
-        this.word = word;
-        this.answers = answers;
-    }
+    public string[] answers = { "кот", "ток", "кто" };
 
 }
