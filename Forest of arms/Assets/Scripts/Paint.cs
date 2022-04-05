@@ -35,9 +35,7 @@ public class Paint : MonoBehaviour
                 
                 for (int j = 0; j < data.answers[i].Length; j++)
                 {
-                    prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);/*
-            prefab.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
-            prefab.GetComponent<RectTransform>().anchorMin = new Vector2(size, size);*/
+                    prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
                     GameObject obj = Instantiate(prefab);
                     obj.transform.SetParent(panel.transform, false);
                     obj.transform.localPosition = new Vector3(x, y, 0);
