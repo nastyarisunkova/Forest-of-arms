@@ -4,24 +4,48 @@ using UnityEngine;
 
 public class Paint : MonoBehaviour
 {
-    public GameObject Canvas;
+    Data data;
+    public GameObject panel;
     public GameObject prefab;
+    float space = 50;
+    float x;
+    float y;
 
-/*    string[] answ = new Data().answers;*/
-    private void Start()
+    bool painted = false;
+    public void Show()
     {
-        float x = Canvas.GetComponent<RectTransform>().rect.x;
-        float y = Canvas.GetComponent<RectTransform>().rect.y;
-        for (int i = 0; i < 3; i++)
+        print(panel.GetComponent<RectTransform>().rect.width);
+        data = new Data();
+        if (!painted)
         {
-            for(int j = 0; j< 3;j++)
+            float size = (panel.GetComponent<RectTransform>().rect.width - ((1+data.answers.Length) * space)) / data.answers.Length;
+            print("size " + size);
+            print("height + " + panel.GetComponent<RectTransform>().rect.height);
+            if(size * data.answers.Length+space* (data.answers.Length + 1)> panel.GetComponent<RectTransform>().rect.height)
             {
-                x += 10+ prefab.GetComponent<RectTransform>().rect.width;
-                GameObject obj = Instantiate(prefab, prefab.transform.position = new Vector3(x, y, 0), Quaternion.identity);
-                obj.transform.SetParent(Canvas.transform, false);
+                size = (panel.GetComponent<RectTransform>().rect.height - ((1 + data.answers.Length) * space)) / data.answers.Length;
+                print("size " + size);
             }
-            x = Canvas.GetComponent<RectTransform>().rect.x;
-            y += 10 + prefab.GetComponent<RectTransform>().rect.height;
+            print(x);
+            y = panel.GetComponent<RectTransform>().rect.height / 2 - space;
+            print(y);
+            for (int i = 0; i < data.answers.Length; i++)
+            {
+                x = -panel.GetComponent<RectTransform>().rect.width / 2 +space;
+                
+                for (int j = 0; j < data.answers[i].Length; j++)
+                {
+                    prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);/*
+            prefab.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
+            prefab.GetComponent<RectTransform>().anchorMin = new Vector2(size, size);*/
+                    GameObject obj = Instantiate(prefab);
+                    obj.transform.SetParent(panel.transform, false);
+                    obj.transform.localPosition = new Vector3(x, y, 0);
+                    x += space + size;
+                }
+                y -= space + size;
+            }
+            painted = true;
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Words : MonoBehaviour
 {
+    Paint paint;
     public Data data;
     public List<GameObject> LetterList;
     public GameObject panel;
@@ -13,11 +14,15 @@ public class Words : MonoBehaviour
     Text[] texts;
     char[,] textAnsw;
     char[] letters;
+    private void Awake()
+    {
+        paint = FindObjectOfType<Paint>();
+        paint.Show();
+    }
     void Start()
     {
         data = new Data();
         answers = data.answers;
-        Letters[] lett = FindObjectsOfType<Letters>();
         texts = panel.GetComponentsInChildren<Text>();
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
         for (int i = 0, n = 0; i < answers.Length; i++)
@@ -46,9 +51,10 @@ public class Words : MonoBehaviour
             int temp = 0;
             foreach (GameObject myLett in LetterList)
             {
-                Letters lt = myLett.GetComponent<Letters>();
-                word += lt.letter;
+                Letter lt = myLett.GetComponent<Letter>();
+                word += lt.letter.text;
             }
+            print(word);
             for (int i = 0; i < answers.Length; i++)
             {
                 if (answers[i] == word)
@@ -80,7 +86,7 @@ public class Words : MonoBehaviour
         if (col != null)
         {
             var obj = col.gameObject;
-            var bs = obj.GetComponent<Letters>();
+            var bs = obj.GetComponent<Letter>();
             if (bs != null)
             {
                 if (!LetterList.Contains(obj))
@@ -102,6 +108,5 @@ public class Words : MonoBehaviour
 public class Data
 {
     public char word;
-    public string[] answers = { "кот", "ток", "кто" };
-
+    public string[] answers = { "кот", "ток", "кто", "сок", "скот", "сток"};
 }
