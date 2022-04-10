@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System.IO;
 
 public class Words : MonoBehaviour
 {
     Paint paint;
+    public string numberOfLevel = "1"; // номер будет равен уровню из файла прогресса
     public Data data;
     public List<GameObject> LetterList;
     public GameObject panel;
@@ -14,14 +17,12 @@ public class Words : MonoBehaviour
     Text[] texts;
     char[,] textAnsw;
     char[] letters;
-    private void Awake()
-    {
-        paint = FindObjectOfType<Paint>();
-        paint.Show();
-    }
     void Start()
     {
-        data = new Data();
+        numberOfLevel = Json.ReadFile("Assets/Levels/number.txt");
+        paint = FindObjectOfType<Paint>();
+        paint.Show();
+        data = Json.ReadFromJson("level" + numberOfLevel);
         answers = data.answers;
         texts = panel.GetComponentsInChildren<Text>();
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
@@ -35,7 +36,6 @@ public class Words : MonoBehaviour
                 texts[n].gameObject.SetActive(false);
             }
         }
-
     }
 
     void Update()
@@ -64,12 +64,30 @@ public class Words : MonoBehaviour
                         texts[temp].gameObject.SetActive(true);
                         temp++;
                     }
+                    LoadFinalScreen();
                 }
                 temp += answers[i].Length;
             }
             ClearList();
         }
 
+    }
+    void LoadFinalScreen()
+    {
+        bool load = true;
+        foreach(Text text in texts)
+        {
+            if(text.gameObject.activeSelf == false)
+            {
+                load = false;
+                break;
+            }
+        }
+        if(load)
+        {
+
+            SceneManager.LoadScene(2);
+        }
     }
     void ClearList()
     {
@@ -104,9 +122,9 @@ public class Words : MonoBehaviour
         }
     }
 }
+
 [System.Serializable]
 public class Data
 {
-    public char word;
-    public string[] answers = { "кот", "ток", "кто", "сок", "скот", "сток"};
+    public string[] answers;
 }

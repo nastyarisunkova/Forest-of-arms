@@ -7,7 +7,8 @@ public class Paint : MonoBehaviour
     Data data;
     public GameObject panel;
     public GameObject prefab;
-    float space = 50;
+    float space = 10;
+    int qSpace = 1;
     float x;
     float y;
 
@@ -15,24 +16,50 @@ public class Paint : MonoBehaviour
     public void Show()
     {
         print(panel.GetComponent<RectTransform>().rect.width);
-        data = new Data();
+        data = Json.ReadFromJson("level" + Json.ReadFile("Assets/Levels/number.txt"));
         if (!painted)
         {
-            float size = (panel.GetComponent<RectTransform>().rect.width - ((1+data.answers.Length) * space)) / data.answers.Length;
-            print("size " + size);
-            print("height + " + panel.GetComponent<RectTransform>().rect.height);
-            if(size * data.answers.Length+space* (data.answers.Length + 1)> panel.GetComponent<RectTransform>().rect.height)
+            int col;
+            if (data.answers.Length <= 5)
+                col = data.answers.Length;
+            else if (data.answers.Length > 5 && data.answers.Length <= 10)
             {
-                size = (panel.GetComponent<RectTransform>().rect.height - ((1 + data.answers.Length) * space)) / data.answers.Length;
-                print("size " + size);
+                col = data.answers[4].Length + data.answers[data.answers.Length - 1].Length;
+                qSpace = 2;
             }
-            print(x);
+            else
+            {
+                col = data.answers[4].Length + data.answers[9].Length + data.answers[data.answers.Length - 1].Length;
+                qSpace = 3;
+            }
+
+            print(col);
+            float size = (panel.GetComponent<RectTransform>().rect.width - ((qSpace + col) * space)) / col;
+            if (size * data.answers.Length + space * (data.answers.Length + 1) > panel.GetComponent<RectTransform>().rect.height)
+            {
+                size = (panel.GetComponent<RectTransform>().rect.height - ((qSpace + col) * space)) / col;
+                print("12");
+            }
+            print(qSpace + col);
+            print(size);
+
+            float temp = 0;
             y = panel.GetComponent<RectTransform>().rect.height / 2 - space;
-            print(y);
             for (int i = 0; i < data.answers.Length; i++)
             {
-                x = -panel.GetComponent<RectTransform>().rect.width / 2 +space;
-                
+                if (i < 5)
+                    x = -panel.GetComponent<RectTransform>().rect.width / 2 + space;
+                else
+                {
+                    if (i == 5 || i==10)
+                    {
+                        temp = x;
+                        y = panel.GetComponent<RectTransform>().rect.height / 2 - space;
+                    }
+                    x = temp + space;
+
+                }
+
                 for (int j = 0; j < data.answers[i].Length; j++)
                 {
                     prefab.GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
@@ -41,7 +68,7 @@ public class Paint : MonoBehaviour
                     obj.transform.localPosition = new Vector3(x, y, 0);
                     x += space + size;
                 }
-                y -= space + size;
+                y -= space + 10 + size;
             }
             painted = true;
         }
