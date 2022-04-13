@@ -8,6 +8,7 @@ using System.IO;
 public class Words : MonoBehaviour
 {
     Paint paint;
+    Interface Interface;
     public string numberOfLevel = "1"; // номер будет равен уровню из файла прогресса
     public Data data;
     public List<GameObject> LetterList;
@@ -20,9 +21,14 @@ public class Words : MonoBehaviour
     void Start()
     {
         numberOfLevel = Json.ReadFile("Assets/Levels/number.txt");
+
         paint = FindObjectOfType<Paint>();
         paint.Show();
+
+        Interface = FindObjectOfType<Interface>();
+
         data = Json.ReadFromJson("level" + numberOfLevel);
+
         answers = data.answers;
         texts = panel.GetComponentsInChildren<Text>();
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
@@ -32,10 +38,11 @@ public class Words : MonoBehaviour
             for (int j = 0; j < answers[i].Length; j++, n++)
             {
                 textAnsw[i, j] = letters[j];
-                texts[n].text = textAnsw[i, j].ToString();
+                texts[n].text = textAnsw[i, j].ToString().ToUpper();
                 texts[n].gameObject.SetActive(false);
             }
         }
+        Interface.letters = texts;
     }
 
     void Update()
@@ -57,20 +64,19 @@ public class Words : MonoBehaviour
             print(word);
             for (int i = 0; i < answers.Length; i++)
             {
-                if (answers[i] == word)
+                if (answers[i] == word.ToLower())
                 {
                     for (int n = 0; n < answers[i].Length; n++)
                     {
                         texts[temp].gameObject.SetActive(true);
                         temp++;
                     }
-                    LoadFinalScreen();
                 }
                 temp += answers[i].Length;
             }
             ClearList();
         }
-
+        LoadFinalScreen();
     }
     void LoadFinalScreen()
     {
@@ -85,7 +91,6 @@ public class Words : MonoBehaviour
         }
         if(load)
         {
-
             SceneManager.LoadScene(2);
         }
     }

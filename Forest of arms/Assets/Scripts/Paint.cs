@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Paint : MonoBehaviour
 {
@@ -35,13 +36,15 @@ public class Paint : MonoBehaviour
 
             print(col);
             float size = (panel.GetComponent<RectTransform>().rect.width - ((qSpace + col) * space)) / col;
-            if (size * data.answers.Length + space * (data.answers.Length + 1) > panel.GetComponent<RectTransform>().rect.height)
+            if (size * 5 + space * (5 + 1) > panel.GetComponent<RectTransform>().rect.height)
             {
                 size = (panel.GetComponent<RectTransform>().rect.height - ((qSpace + col) * space)) / col;
                 print("12");
             }
             print(qSpace + col);
             print(size);
+
+            prefab.GetComponentInChildren<Text>().fontSize = (int)(size * 80 / 100);
 
             float temp = 0;
             y = panel.GetComponent<RectTransform>().rect.height / 2 - space;
