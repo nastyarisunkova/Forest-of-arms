@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 186518555}
   - component: {fileID: 186518554}
   m_Layer: 5
-  m_Name: HintOText
+  m_Name: HintOLext
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -437,6 +437,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   letters: []
+  hintOL: {fileID: 186518554}
+  hintRL: {fileID: 238482805}
 --- !u!1 &538875059
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +828,18 @@ MonoBehaviour:
     answers: []
   LetterList: []
   panel: {fileID: 1342527742}
+  moneyText: {fileID: 1186803256}
+--- !u!114 &1186803256 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 756573632348373088, guid: 2f90197b069d1f34c9ac4856a64c3132, type: 3}
+  m_PrefabInstance: {fileID: 756573631326398115}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1287312947
 GameObject:
   m_ObjectHideFlags: 0

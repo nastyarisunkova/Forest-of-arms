@@ -16,7 +16,7 @@ public class Letters : MonoBehaviour
 
     private void Start()
     {
-        data = Json.ReadFromJson("level" + Json.ReadFile("Assets/Levels/number.txt"));
+        data = DataLoad.ReadFromJson("level" + DataLoad.ReadFile("Assets/Levels/number.txt"));
         DrawLetterrs();
         lettersArray = data.answers[data.answers.Length - 1].ToCharArray();
         letters = circle.GetComponentsInChildren<Text>();

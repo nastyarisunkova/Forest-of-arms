@@ -4,15 +4,29 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Linq;
+using System;
 
 public class Interface : MonoBehaviour
 {
     Data data;
+    Words words;
     public Text[] letters;
+    public Text hintOL;
+    public Text hintRL;
 
+    string text = "";
     private void Start()
     {
-        data = Json.ReadFromJson("level" + Json.ReadFile("Assets/Levels/number.txt"));
+        data = DataLoad.ReadFromJson("level" + DataLoad.ReadFile("Assets/Levels/number.txt"));
+        words = FindObjectOfType<Words>();
+    }
+
+    public void LettersToText()
+    {
+        foreach (Text letter in letters)
+        {
+            text += letter.text;
+        }
     }
     public void BackToMenu()
     {
@@ -21,40 +35,50 @@ public class Interface : MonoBehaviour
 
     public void OpenRepeatLetters()
     {
-        int count = 0;
-        Text l = letters[0];
-        foreach(Text letter in letters)
+        if(Convert.ToInt32(words.moneyText.text) > Convert.ToInt32(hintRL.text))
         {
-            var temp = letters.Count(chr => chr == letter);
-            if (count < temp)
+            int count = 0;
+            char l = ' ';
+            foreach (char letter in text)
             {
-                count = temp;
-                l = letter;
+                var temp = text.Count(chr => chr == letter);
+                if (count < temp)
+                {
+                    count = temp;
+                    l = letter;
+                }
             }
-        }
-        print(count);
 
-        foreach(Text letter in letters)
-        {
-            if(letter.text == l.text)
+            for (int i = 0; i < letters.Length; i++)
             {
-                l.gameObject.SetActive(true);
+                if (letters[i].text == l.ToString())
+                {
+                    letters[i].gameObject.SetActive(true);
+                    text = text.Replace(l.ToString(), "");
+                }
             }
+            words.moneyText.text = (Convert.ToInt32(words.moneyText.text) - Convert.ToInt32(hintRL.text)).ToString();
+            words.LoadFinalScreen();
         }
     }
 
     public void OpenOneLetter()
     {
-        Text hint;
-        bool flag = true;
-        while(flag)
+        if (Convert.ToInt32(words.moneyText.text) > Convert.ToInt32(hintOL.text))
         {
-            hint = letters[Random.Range(0,letters.Length)];
-            if(!hint.gameObject.activeSelf)
+            Text hint;
+            bool flag = true;
+            while (flag)
             {
-                hint.gameObject.SetActive(true);
-                flag = false;
+                hint = letters[UnityEngine.Random.Range(0, letters.Length)];
+                if (!hint.gameObject.activeSelf)
+                {
+                    hint.gameObject.SetActive(true);
+                    flag = false;
+                    words.LoadFinalScreen();
+                }
             }
+            words.moneyText.text = (Convert.ToInt32(words.moneyText.text) - Convert.ToInt32(hintOL.text)).ToString();
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.IO;
 
 public class Words : MonoBehaviour
 {
@@ -16,18 +15,24 @@ public class Words : MonoBehaviour
     string[] answers;
     string word = "";
     Text[] texts;
+    public Text moneyText;
     char[,] textAnsw;
     char[] letters;
+/*    GameData gameData;*/
+
     void Start()
     {
-        numberOfLevel = Json.ReadFile("Assets/Levels/number.txt");
+        numberOfLevel = DataLoad.ReadFile("Assets/Levels/number.txt");
 
         paint = FindObjectOfType<Paint>();
         paint.Show();
 
         Interface = FindObjectOfType<Interface>();
 
-        data = Json.ReadFromJson("level" + numberOfLevel);
+        data = DataLoad.ReadFromJson("level" + numberOfLevel);
+
+/*        gameData = DataLoad.LoadGame();*/
+/*        moneyText.text = gameData.money.ToString(); */
 
         answers = data.answers;
         texts = panel.GetComponentsInChildren<Text>();
@@ -43,6 +48,7 @@ public class Words : MonoBehaviour
             }
         }
         Interface.letters = texts;
+        Interface.LettersToText();
     }
 
     void Update()
@@ -71,14 +77,14 @@ public class Words : MonoBehaviour
                         texts[temp].gameObject.SetActive(true);
                         temp++;
                     }
+                    LoadFinalScreen();
                 }
                 temp += answers[i].Length;
             }
             ClearList();
         }
-        LoadFinalScreen();
     }
-    void LoadFinalScreen()
+    public void LoadFinalScreen()
     {
         bool load = true;
         foreach(Text text in texts)
@@ -91,6 +97,7 @@ public class Words : MonoBehaviour
         }
         if(load)
         {
+/*            moneyText.text = (gameData.money + 10).ToString();*/
             SceneManager.LoadScene(2);
         }
     }

@@ -16,8 +16,7 @@ public class Paint : MonoBehaviour
     bool painted = false;
     public void Show()
     {
-        print(panel.GetComponent<RectTransform>().rect.width);
-        data = Json.ReadFromJson("level" + Json.ReadFile("Assets/Levels/number.txt"));
+        data = DataLoad.ReadFromJson("level" + DataLoad.ReadFile("Assets/Levels/number.txt"));
         if (!painted)
         {
             int col;
@@ -34,16 +33,11 @@ public class Paint : MonoBehaviour
                 qSpace = 3;
             }
 
-            print(col);
             float size = (panel.GetComponent<RectTransform>().rect.width - ((qSpace + col) * space)) / col;
             if (size * 5 + space * (5 + 1) > panel.GetComponent<RectTransform>().rect.height)
             {
                 size = (panel.GetComponent<RectTransform>().rect.height - ((qSpace + col) * space)) / col;
-                print("12");
             }
-            print(qSpace + col);
-            print(size);
-
             prefab.GetComponentInChildren<Text>().fontSize = (int)(size * 80 / 100);
 
             float temp = 0;

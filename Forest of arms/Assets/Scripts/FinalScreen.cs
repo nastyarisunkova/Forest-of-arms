@@ -10,9 +10,9 @@ public class FinalScreen : MonoBehaviour
     public void LoadNextLevel()
     {
         string path = "Assets/Levels/number.txt";
-        int number = Convert.ToInt32(Json.ReadFile(path)) + 1;
+        int number = Convert.ToInt32(DataLoad.ReadFile(path)) + 1;
 
-        Json.WriteFile(path, number.ToString());
+        DataLoad.WriteFile(path, number.ToString());
 
         SceneManager.LoadScene(1); 
     }
