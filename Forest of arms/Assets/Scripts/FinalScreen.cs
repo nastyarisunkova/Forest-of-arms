@@ -1,12 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System;
+using UnityEngine.UI;
 
 public class FinalScreen : MonoBehaviour
 {
+    public Text moneyText;
+    GameData gameData;
+    private void Start()
+    {
+        gameData = DataLoad.LoadGame();
+        moneyText.text = gameData.money.ToString();
+    }
     public void LoadNextLevel()
     {
         string path = "Assets/Levels/number.txt";

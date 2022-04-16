@@ -1,8 +1,8 @@
-using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
 
-public static class DataLoad
+public class DataLoad
 {
     public static void SaveToJson(string content)
     {
@@ -36,12 +36,12 @@ public static class DataLoad
         }
     }
 
-/*    public static void SaveData(GameData data)
+    public static void SaveData(GameData data)
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath
-          + "/MySaveData.dat");
-        GameData gdata = data;
+          + "/SaveData.dat");
+        GameData gdata = new GameData(data.money);
         bf.Serialize(file, gdata);
         file.Close();
         Debug.Log("Game data saved!");
@@ -49,38 +49,27 @@ public static class DataLoad
 
     public static GameData LoadGame()
     {
-        if (File.Exists(Application.persistentDataPath
-          + "/MySaveData.dat"))
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file =
-              File.Open(Application.persistentDataPath
-              + "/MySaveData.dat", FileMode.Open);
-            GameData gdata = (GameData)bf.Deserialize(file);
-            file.Close();
-            Debug.Log("Game data loaded!");
-            return gdata;
-        }
-        else
-        {
-            FileStream file = File.Create(Application.persistentDataPath + "/MySaveData.dat");
-            Debug.LogError("There is no save data!");
-            return new GameData();
-        }
-    }*/
+        if (!File.Exists(Application.persistentDataPath
+          + "/SaveData.dat"))
+            return null;
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Open(Application.persistentDataPath + "/SaveData.dat", FileMode.Open);
+        GameData gdata = bf.Deserialize(file) as GameData;
+        file.Close();
+        Debug.Log("Game data loaded!");
+        return gdata;
+    }
 }
 
-/*[System.Serializable]
+[System.Serializable]
 public class GameData
 {
     public int money;
-    public int progress;
-    public string[] answers;
+/*    public int progress;
+    public string[] answers;*/
 
-    public GameData()
+    public GameData(int money)
     {
-        money = 0;
-        progress = 0;
-        answers = new string[0];
+        this.money = money;
     }
-}*/
+}

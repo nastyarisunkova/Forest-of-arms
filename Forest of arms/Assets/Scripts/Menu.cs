@@ -2,20 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Text moneyText;
+    GameData gameData;
     void Start()
     {
-        
+        if (DataLoad.LoadGame() != null)
+        {
+            gameData = DataLoad.LoadGame();
+        }
+        else
+        {
+            gameData = new GameData(0);
+        }
+        moneyText.text = gameData.money.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 
     public void LoadGame()
     {

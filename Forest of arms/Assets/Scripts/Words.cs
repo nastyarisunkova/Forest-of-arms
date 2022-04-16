@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Words : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Words : MonoBehaviour
     public Text moneyText;
     char[,] textAnsw;
     char[] letters;
-/*    GameData gameData;*/
+    GameData gameData;
 
     void Start()
     {
@@ -30,9 +31,9 @@ public class Words : MonoBehaviour
         Interface = FindObjectOfType<Interface>();
 
         data = DataLoad.ReadFromJson("level" + numberOfLevel);
-
-/*        gameData = DataLoad.LoadGame();*/
-/*        moneyText.text = gameData.money.ToString(); */
+        
+        gameData = DataLoad.LoadGame();
+        moneyText.text = gameData.money.ToString();
 
         answers = data.answers;
         texts = panel.GetComponentsInChildren<Text>();
@@ -97,7 +98,9 @@ public class Words : MonoBehaviour
         }
         if(load)
         {
-/*            moneyText.text = (gameData.money + 10).ToString();*/
+            moneyText.text = (gameData.money + 10).ToString();
+            gameData = new GameData(Convert.ToInt32(gameData.money) + 10);
+            DataLoad.SaveData(gameData);
             SceneManager.LoadScene(2);
         }
     }
