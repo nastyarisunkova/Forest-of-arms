@@ -9,10 +9,11 @@ public class Words : MonoBehaviour
 {
     Paint paint;
     Interface Interface;
-    public string numberOfLevel = "1"; // номер будет равен уровню из файла прогресса
+    public string numberOfLevel;
     public Data data;
     public List<GameObject> LetterList;
     public GameObject panel;
+    public GameObject circle;
     string[] answers;
     string word = "";
     Text[] texts;
@@ -20,9 +21,11 @@ public class Words : MonoBehaviour
     char[,] textAnsw;
     char[] letters;
     GameData gameData;
+    LineRenderer lr;
 
     void Start()
     {
+        lr = circle.GetComponent<LineRenderer>();
         numberOfLevel = DataLoad.ReadFile("Assets/Levels/number.txt");
 
         paint = FindObjectOfType<Paint>();
@@ -51,21 +54,39 @@ public class Words : MonoBehaviour
         Interface.letters = texts;
         Interface.LettersToText();
     }
-
+    Vector3 touchPosition;
+    Vector3 touchDir;
     void Update()
     {
+
+        
+/*        touchDir.z = 0;
+        touchDir = touchDir.normalized;*/
         if (Input.GetMouseButton(0))
         {
-            var touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
             AddLetter(col);
+            
+            lr.positionCount = LetterList.Count+1;
+            for (int i = 0; i < LetterList.Count; i++)
+            {
+                Vector3 Pos = new Vector3(LetterList[i].GetComponent<RectTransform>().position.x, LetterList[i].GetComponent<RectTransform>().position.y, 0);
+                lr.SetPosition(i, Pos);
+                touchPosition.z = 0;
+                lr.SetPosition(i+1, touchPosition);
+                
+            }
         }
+
+
         else if (LetterList.Count != 0)
         {
             int temp = 0;
             foreach (GameObject myLett in LetterList)
             {
                 Letter lt = myLett.GetComponent<Letter>();
+                
                 word += lt.letter.text;
             }
             print(word);
@@ -106,10 +127,15 @@ public class Words : MonoBehaviour
     }
     void ClearList()
     {
-        for (int i = 0; i < LetterList.Count - 1; i++)
+        for (int i = 0; i <= LetterList.Count; i++)
         {
-            LineRenderer lr = LetterList[i].GetComponent<LineRenderer>();
-            lr.SetPosition(1, LetterList[i].transform.position);
+            
+            if(i != LetterList.Count)
+                lr.SetPosition(i, LetterList[i].GetComponent<RectTransform>().position);
+            else
+            {
+                lr.SetPosition(i, LetterList[i-1].GetComponent<RectTransform>().position);
+            }
         }
         LetterList.Clear();
         word = null;
@@ -119,6 +145,7 @@ public class Words : MonoBehaviour
         if (col != null)
         {
             var obj = col.gameObject;
+            /*touchDir = touchPosition - obj.transform.position;*/
             var bs = obj.GetComponent<Letter>();
             if (bs != null)
             {
@@ -127,12 +154,7 @@ public class Words : MonoBehaviour
                     LetterList.Add(obj);
                 }
 
-                for (int i = 0; i < LetterList.Count - 1; i++)
-                {
-                    LineRenderer lr = LetterList[i].GetComponent<LineRenderer>();
-                    lr.SetPosition(0, LetterList[i].transform.position);
-                    lr.SetPosition(1, LetterList[i + 1].transform.position);
-                }
+                
             }
         }
     }
