@@ -17,7 +17,9 @@ public class Menu : MonoBehaviour
         else
         {
             gameData = new GameData(0);
+            DataLoad.SaveData(gameData);
         }
+        
         moneyText.text = gameData.money.ToString();
     }
 

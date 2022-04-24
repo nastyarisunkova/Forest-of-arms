@@ -14,14 +14,15 @@ public class Words : MonoBehaviour
     public List<GameObject> LetterList;
     public GameObject panel;
     public GameObject circle;
+    public Text moneyText;
     string[] answers;
     string word = "";
     Text[] texts;
-    public Text moneyText;
     char[,] textAnsw;
     char[] letters;
     GameData gameData;
     LineRenderer lr;
+    Vector3 touchPosition;
 
     void Start()
     {
@@ -39,7 +40,18 @@ public class Words : MonoBehaviour
         moneyText.text = gameData.money.ToString();
 
         answers = data.answers;
+
         texts = panel.GetComponentsInChildren<Text>();
+        bool wasSaved = false;
+        if(gameData.answers!=null)
+        {
+            for (int i = 0; i < gameData.answers.Length; i++)
+            {
+                texts[i].gameObject.SetActive(gameData.answers[i]);
+            }
+            wasSaved = true;
+        }
+        
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
         for (int i = 0, n = 0; i < answers.Length; i++)
         {
@@ -48,20 +60,17 @@ public class Words : MonoBehaviour
             {
                 textAnsw[i, j] = letters[j];
                 texts[n].text = textAnsw[i, j].ToString().ToUpper();
-                texts[n].gameObject.SetActive(false);
+                if (wasSaved)
+                    texts[n].gameObject.SetActive(gameData.answers[n]);
+                else
+                    texts[n].gameObject.SetActive(false);
             }
         }
         Interface.letters = texts;
         Interface.LettersToText();
     }
-    Vector3 touchPosition;
-    Vector3 touchDir;
     void Update()
     {
-
-        
-/*        touchDir.z = 0;
-        touchDir = touchDir.normalized;*/
         if (Input.GetMouseButton(0))
         {
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -75,10 +84,8 @@ public class Words : MonoBehaviour
                 lr.SetPosition(i, Pos);
                 touchPosition.z = 0;
                 lr.SetPosition(i+1, touchPosition);
-                
             }
         }
-
 
         else if (LetterList.Count != 0)
         {
@@ -109,7 +116,16 @@ public class Words : MonoBehaviour
     public void LoadFinalScreen()
     {
         bool load = true;
-        foreach(Text text in texts)
+
+        gameData.answers = new bool[texts.Length];
+        for(int i = 0;i<gameData.answers.Length;i++)
+        {
+            gameData.answers[i] = texts[i].gameObject.activeSelf;
+        }
+
+        DataLoad.SaveData(gameData);
+
+        foreach (Text text in texts)
         {
             if(text.gameObject.activeSelf == false)
             {
@@ -120,7 +136,7 @@ public class Words : MonoBehaviour
         if(load)
         {
             moneyText.text = (gameData.money + 10).ToString();
-            gameData = new GameData(Convert.ToInt32(gameData.money) + 10);
+            gameData = new GameData(Convert.ToInt32(gameData.money) + 10, gameData.answers);
             DataLoad.SaveData(gameData);
             SceneManager.LoadScene(2);
         }
@@ -145,7 +161,6 @@ public class Words : MonoBehaviour
         if (col != null)
         {
             var obj = col.gameObject;
-            /*touchDir = touchPosition - obj.transform.position;*/
             var bs = obj.GetComponent<Letter>();
             if (bs != null)
             {
@@ -153,8 +168,6 @@ public class Words : MonoBehaviour
                 {
                     LetterList.Add(obj);
                 }
-
-                
             }
         }
     }

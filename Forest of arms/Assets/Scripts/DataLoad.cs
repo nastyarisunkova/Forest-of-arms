@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DataLoad
 {
@@ -40,8 +41,8 @@ public class DataLoad
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath
-          + "/SaveData.dat");
-        GameData gdata = new GameData(data.money);
+          + "/Data.dat");
+        GameData gdata = new GameData(data.money, data.answers);
         bf.Serialize(file, gdata);
         file.Close();
         Debug.Log("Game data saved!");
@@ -50,10 +51,10 @@ public class DataLoad
     public static GameData LoadGame()
     {
         if (!File.Exists(Application.persistentDataPath
-          + "/SaveData.dat"))
+          + "/Data.dat"))
             return null;
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath + "/SaveData.dat", FileMode.Open);
+        FileStream file = File.Open(Application.persistentDataPath + "/Data.dat", FileMode.Open);
         GameData gdata = bf.Deserialize(file) as GameData;
         file.Close();
         Debug.Log("Game data loaded!");
@@ -65,11 +66,15 @@ public class DataLoad
 public class GameData
 {
     public int money;
-/*    public int progress;
-    public string[] answers;*/
+    public bool[] answers;
 
     public GameData(int money)
     {
         this.money = money;
+    }
+    public GameData(int money, bool[] answers)
+        :this(money)
+    {
+        this.answers = answers;
     }
 }
