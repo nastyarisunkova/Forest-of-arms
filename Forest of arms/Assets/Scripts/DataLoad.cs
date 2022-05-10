@@ -42,8 +42,7 @@ public class DataLoad
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath
           + "/Data.dat");
-        GameData gdata = new GameData(data.money, data.answers);
-        bf.Serialize(file, gdata);
+        bf.Serialize(file, data);
         file.Close();
         Debug.Log("Game data saved!");
     }
@@ -67,14 +66,21 @@ public class GameData
 {
     public int money;
     public bool[] answers;
+    public int progressPercent;
+    public int packIcon;
 
-    public GameData(int money)
+    public GameData()
+    {
+        money = 0;
+        answers = new bool[0];
+        progressPercent = 0;
+        packIcon = 1;
+    }
+    public GameData(int money, bool[] answers, int progressPercent, int packIcon)
     {
         this.money = money;
-    }
-    public GameData(int money, bool[] answers)
-        :this(money)
-    {
         this.answers = answers;
+        this.progressPercent = progressPercent;
+        this.packIcon = packIcon;
     }
 }

@@ -927,6 +927,7 @@ MonoBehaviour:
   panel: {fileID: 1342527742}
   circle: {fileID: 898041012}
   moneyText: {fileID: 1186803256}
+  packPrefab: {fileID: 3924393397537328752, guid: 6c38da7a2a0547c47af7b6ce07c3e41b, type: 3}
 --- !u!114 &1186803256 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 756573632348373088, guid: 2f90197b069d1f34c9ac4856a64c3132, type: 3}

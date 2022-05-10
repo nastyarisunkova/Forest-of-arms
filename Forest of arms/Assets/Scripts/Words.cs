@@ -15,6 +15,7 @@ public class Words : MonoBehaviour
     public GameObject panel;
     public GameObject circle;
     public Text moneyText;
+    Image[] packs;
     string[] answers;
     string word = "";
     Text[] texts;
@@ -23,6 +24,7 @@ public class Words : MonoBehaviour
     GameData gameData;
     LineRenderer lr;
     Vector3 touchPosition;
+    int progress = 20;
 
     void Start()
     {
@@ -35,7 +37,7 @@ public class Words : MonoBehaviour
         Interface = FindObjectOfType<Interface>();
 
         data = DataLoad.ReadFromJson("level" + numberOfLevel);
-        
+
         gameData = DataLoad.LoadGame();
         moneyText.text = gameData.money.ToString();
 
@@ -43,15 +45,15 @@ public class Words : MonoBehaviour
 
         texts = panel.GetComponentsInChildren<Text>();
         bool wasSaved = false;
-        if(gameData.answers!=null)
-        {
-            for (int i = 0; i < gameData.answers.Length; i++)
-            {
-                texts[i].gameObject.SetActive(gameData.answers[i]);
-            }
-            wasSaved = true;
-        }
-        
+        /*        if(gameData.answers!=null)
+                {
+                    for (int i = 0; i < gameData.answers.Length; i++)
+                    {
+                        texts[i].gameObject.SetActive(gameData.answers[i]);
+                    }
+                    wasSaved = true;
+                }*/
+
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
         for (int i = 0, n = 0; i < answers.Length; i++)
         {
@@ -76,14 +78,14 @@ public class Words : MonoBehaviour
             touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
             AddLetter(col);
-            
-            lr.positionCount = LetterList.Count+1;
+
+            lr.positionCount = LetterList.Count + 1;
             for (int i = 0; i < LetterList.Count; i++)
             {
                 Vector3 Pos = new Vector3(LetterList[i].GetComponent<RectTransform>().position.x, LetterList[i].GetComponent<RectTransform>().position.y, 0);
                 lr.SetPosition(i, Pos);
                 touchPosition.z = 0;
-                lr.SetPosition(i+1, touchPosition);
+                lr.SetPosition(i + 1, touchPosition);
             }
         }
 
@@ -93,7 +95,7 @@ public class Words : MonoBehaviour
             foreach (GameObject myLett in LetterList)
             {
                 Letter lt = myLett.GetComponent<Letter>();
-                
+
                 word += lt.letter.text;
             }
             print(word);
@@ -118,7 +120,7 @@ public class Words : MonoBehaviour
         bool load = true;
 
         gameData.answers = new bool[texts.Length];
-        for(int i = 0;i<gameData.answers.Length;i++)
+        for (int i = 0; i < gameData.answers.Length; i++)
         {
             gameData.answers[i] = texts[i].gameObject.activeSelf;
         }
@@ -127,16 +129,22 @@ public class Words : MonoBehaviour
 
         foreach (Text text in texts)
         {
-            if(text.gameObject.activeSelf == false)
+            if (text.gameObject.activeSelf == false)
             {
                 load = false;
                 break;
             }
         }
-        if(load)
+        if (load)
         {
             moneyText.text = (gameData.money + 10).ToString();
-            gameData = new GameData(Convert.ToInt32(gameData.money) + 10, gameData.answers);
+            gameData.progressPercent = 100;
+            if (gameData.progressPercent >= 100)
+            {
+                gameData.packIcon++;
+                gameData.progressPercent = 0;
+            }
+            gameData.money += 10;
             DataLoad.SaveData(gameData);
             SceneManager.LoadScene(2);
         }
@@ -145,12 +153,12 @@ public class Words : MonoBehaviour
     {
         for (int i = 0; i <= LetterList.Count; i++)
         {
-            
-            if(i != LetterList.Count)
+
+            if (i != LetterList.Count)
                 lr.SetPosition(i, LetterList[i].GetComponent<RectTransform>().position);
             else
             {
-                lr.SetPosition(i, LetterList[i-1].GetComponent<RectTransform>().position);
+                lr.SetPosition(i, LetterList[i - 1].GetComponent<RectTransform>().position);
             }
         }
         LetterList.Clear();
