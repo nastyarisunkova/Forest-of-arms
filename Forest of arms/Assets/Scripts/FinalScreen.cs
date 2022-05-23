@@ -29,11 +29,6 @@ public class FinalScreen : MonoBehaviour
     }
     public void LoadNextLevel()
     {
-        string path = "Assets/Levels/number.txt";
-        int number = Convert.ToInt32(DataLoad.ReadFile(path)) + 1;
-
-        DataLoad.WriteFile(path, number.ToString());
-
         SceneManager.LoadScene(1); 
     }
 

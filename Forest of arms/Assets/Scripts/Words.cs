@@ -24,7 +24,7 @@ public class Words : MonoBehaviour
     GameData gameData;
     LineRenderer lr;
     Vector3 touchPosition;
-    int progress = 20;
+    int percent = 20;
 
     void Start()
     {
@@ -138,13 +138,16 @@ public class Words : MonoBehaviour
         if (load)
         {
             moneyText.text = (gameData.money + 10).ToString();
-            gameData.progressPercent = 100;
+            gameData.progressPercent += percent;
             if (gameData.progressPercent >= 100)
             {
                 gameData.packIcon++;
                 gameData.progressPercent = 0;
             }
             gameData.money += 10;
+
+            DataLoad.WriteFile("Assets/Levels/number.txt", (Convert.ToInt32(numberOfLevel) + 1).ToString());
+
             DataLoad.SaveData(gameData);
             SceneManager.LoadScene(2);
         }

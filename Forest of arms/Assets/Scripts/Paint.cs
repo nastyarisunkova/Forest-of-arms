@@ -38,7 +38,7 @@ public class Paint : MonoBehaviour
             {
                 size = (panel.GetComponent<RectTransform>().rect.height - ((qSpace + col) * space)) / col;
             }
-            prefab.GetComponentInChildren<Text>().fontSize = (int)(size * 80 / 100);
+            prefab.GetComponentInChildren<Text>().fontSize = (int)(size * 70 / 100);
 
             float temp = 0;
             y = panel.GetComponent<RectTransform>().rect.height / 2 - space;

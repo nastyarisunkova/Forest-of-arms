@@ -36,12 +36,10 @@ public class Menu : MonoBehaviour
             }
             packIcons[i].gameObject.SetActive(false);
         }
-
+        gameData.packIcon = 1;
         moneyText.text = gameData.money.ToString();
         progressText.text = gameData.progressPercent.ToString() + "%";
     }
-
-
 
     public void LoadGame()
     {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class DataLoad
 {
-    public static void SaveToJson(string content)
+/*    public static void SaveToJson(string content)
     {
         FileStream fileStream = new FileStream("C:/Unity/Forest-of-arms/Forest of arms/Assets/Levels/level1.json", FileMode.Create);
 
@@ -13,7 +13,7 @@ public class DataLoad
         {
             writer.Write(content);
         }
-    }
+    }*/
     public static Data ReadFromJson(string fileName)
     {
         using (StreamReader fs = new StreamReader($"C:/Unity/Forest-of-arms/Forest of arms/Assets/Levels/{fileName}.json"))
