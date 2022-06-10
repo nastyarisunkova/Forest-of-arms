@@ -15,18 +15,7 @@ public class Menu : MonoBehaviour
 
     void Start()
     {
-        if (DataLoad.LoadGame() != null)
-        {
-            gameData = DataLoad.LoadGame();
-        }
-        else
-        {
-            gameData = new GameData();
-            DataLoad.SaveData(gameData);
-        }
-        /*        gameData = new GameData();
-                DataLoad.SaveData(gameData);*/
-
+        gameData = DataLoad.LoadGame();
         packIcons = packIconPrefab.GetComponentsInChildren<Image>();
         for (int i = 1; i < packIcons.Length; i++)
         {
@@ -36,13 +25,12 @@ public class Menu : MonoBehaviour
             }
             packIcons[i].gameObject.SetActive(false);
         }
-        gameData.packIcon = 1;
         moneyText.text = gameData.money.ToString();
         progressText.text = gameData.progressPercent.ToString() + "%";
     }
 
     public void LoadGame()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
 }

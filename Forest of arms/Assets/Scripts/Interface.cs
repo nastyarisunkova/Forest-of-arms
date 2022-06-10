@@ -8,7 +8,6 @@ using System;
 
 public class Interface : MonoBehaviour
 {
-    Data data;
     Words words;
     public Text[] letters;
     public Text hintOL;
@@ -17,7 +16,6 @@ public class Interface : MonoBehaviour
     string text = "";
     private void Start()
     {
-        data = DataLoad.ReadFromJson("level" + DataLoad.ReadFile("Assets/Levels/number.txt"));
         words = FindObjectOfType<Words>();
     }
 

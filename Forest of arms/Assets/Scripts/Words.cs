@@ -15,7 +15,6 @@ public class Words : MonoBehaviour
     public GameObject panel;
     public GameObject circle;
     public Text moneyText;
-    Image[] packs;
     string[] answers;
     string word = "";
     Text[] texts;
@@ -41,41 +40,49 @@ public class Words : MonoBehaviour
         gameData = DataLoad.LoadGame();
         moneyText.text = gameData.money.ToString();
 
+        /*LoadLetters();*/
         answers = data.answers;
 
         texts = panel.GetComponentsInChildren<Text>();
         bool wasSaved = false;
-        /*        if(gameData.answers!=null)
-                {
-                    for (int i = 0; i < gameData.answers.Length; i++)
-                    {
-                        texts[i].gameObject.SetActive(gameData.answers[i]);
-                    }
-                    wasSaved = true;
-                }*/
+        if (gameData.answers != null)
+        {
+            for (int i = 0; i < gameData.answers.Length; i++)
+            {
+                texts[i].gameObject.SetActive(gameData.answers[i]);
+            }
+            wasSaved = true;
+        }
 
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
-        for (int i = 0, n = 0; i < answers.Length; i++)
+        for (int i = 0, n = 0; i < answers.Length; i++, n++)
         {
             letters = answers[i].ToCharArray();
-            for (int j = 0; j < answers[i].Length; j++, n++)
+            for (int j = 0; j < answers[i].Length; j++)
             {
                 textAnsw[i, j] = letters[j];
                 texts[n].text = textAnsw[i, j].ToString().ToUpper();
                 if (wasSaved)
+                {
+                    Debug.Log(n);
                     texts[n].gameObject.SetActive(gameData.answers[n]);
+                }
                 else
                     texts[n].gameObject.SetActive(false);
             }
         }
+
         Interface.letters = texts;
         Interface.LettersToText();
     }
     void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.touchCount > 0)
         {
-            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.touches[0].position);
+            /*        if (Input.GetMouseButton(0))
+                    {
+                        touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);*/
             Collider2D col = Physics2D.Raycast(touchPosition, transform.position).collider;
             AddLetter(col);
 
@@ -115,6 +122,38 @@ public class Words : MonoBehaviour
             ClearList();
         }
     }
+
+/*    void LoadLetters()
+    {
+        answers = data.answers;
+
+        texts = panel.GetComponentsInChildren<Text>();
+        bool wasSaved = false;
+        if (gameData.answers != null)
+        {
+            for (int i = 0; i < gameData.answers.Length; i++)
+            {
+                texts[i].gameObject.SetActive(gameData.answers[i]);
+            }
+            wasSaved = true;
+        }
+
+        textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
+        for (int i = 0, n = 0; i < answers.Length; i++)
+        {
+            letters = answers[i].ToCharArray();
+            for (int j = 0; j < answers[i].Length; j++, n++)
+            {
+                textAnsw[i, j] = letters[j];
+                texts[n].text = textAnsw[i, j].ToString().ToUpper();
+                if (wasSaved)
+                    texts[n].gameObject.SetActive(gameData.answers[n]);
+                else
+                    texts[n].gameObject.SetActive(false);
+            }
+        }
+    }*/
+
     public void LoadFinalScreen()
     {
         bool load = true;
@@ -149,7 +188,7 @@ public class Words : MonoBehaviour
             DataLoad.WriteFile("Assets/Levels/number.txt", (Convert.ToInt32(numberOfLevel) + 1).ToString());
 
             DataLoad.SaveData(gameData);
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
         }
     }
     void ClearList()

@@ -5,18 +5,9 @@ using UnityEngine.UI;
 
 public class DataLoad
 {
-/*    public static void SaveToJson(string content)
-    {
-        FileStream fileStream = new FileStream("C:/Unity/Forest-of-arms/Forest of arms/Assets/Levels/level1.json", FileMode.Create);
-
-        using (StreamWriter writer = new StreamWriter(fileStream))
-        {
-            writer.Write(content);
-        }
-    }*/
     public static Data ReadFromJson(string fileName)
     {
-        using (StreamReader fs = new StreamReader($"C:/Unity/Forest-of-arms/Forest of arms/Assets/Levels/{fileName}.json"))
+        using (StreamReader fs = new StreamReader($"Assets/Levels/{fileName}.json"))
         {
             return JsonUtility.FromJson<Data>(fs.ReadToEnd());
         }
@@ -41,22 +32,17 @@ public class DataLoad
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath
-          + "/Data.dat");
+          + "/GameData.dat");
         bf.Serialize(file, data);
         file.Close();
-        Debug.Log("Game data saved!");
     }
 
     public static GameData LoadGame()
     {
-        if (!File.Exists(Application.persistentDataPath
-          + "/Data.dat"))
-            return null;
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Open(Application.persistentDataPath + "/Data.dat", FileMode.Open);
+        FileStream file = File.Open(Application.persistentDataPath + "/GameData.dat", FileMode.Open);
         GameData gdata = bf.Deserialize(file) as GameData;
         file.Close();
-        Debug.Log("Game data loaded!");
         return gdata;
     }
 }
@@ -71,8 +57,7 @@ public class GameData
 
     public GameData()
     {
-        money = 0;
-        answers = new bool[0];
+        money = 500;
         progressPercent = 0;
         packIcon = 1;
     }

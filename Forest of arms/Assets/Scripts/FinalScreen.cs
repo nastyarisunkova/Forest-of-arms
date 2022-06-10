@@ -29,7 +29,7 @@ public class FinalScreen : MonoBehaviour
     }
     public void LoadNextLevel()
     {
-        SceneManager.LoadScene(1); 
+        SceneManager.LoadScene(2); 
     }
 
     public void BackToMenu()
