@@ -7,7 +7,7 @@ public class DataLoad
 {
     public static Data ReadFromJson(string fileName)
     {
-        using (StreamReader fs = new StreamReader($"Assets/Levels/{fileName}.json"))
+        using (StreamReader fs = new StreamReader($"jar:file://{Application.dataPath}!/Assets/Levels/1.json"))
         {
             return JsonUtility.FromJson<Data>(fs.ReadToEnd());
         }

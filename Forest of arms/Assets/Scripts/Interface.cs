@@ -28,7 +28,7 @@ public class Interface : MonoBehaviour
     }
     public void BackToMenu()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
 
     public void OpenRepeatLetters()
