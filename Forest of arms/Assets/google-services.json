@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1054645534256",
+    "firebase_url": "https://levels-939f5-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "levels-939f5",
+    "storage_bucket": "levels-939f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054645534256:android:f5cc80b9568281d44fb7f5",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.Forestofarms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054645534256-h2p5l2gi59o0c1vd49suehqgsj9tc43g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWR0LGWPWXnt_gVC9NI0DXJ2ZEBAu_Di0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1054645534256-h2p5l2gi59o0c1vd49suehqgsj9tc43g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
