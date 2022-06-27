@@ -44,15 +44,15 @@ public class Words : MonoBehaviour
         answers = data.answers;
 
         texts = panel.GetComponentsInChildren<Text>();
-        bool wasSaved = false;
-        if (gameData.answers != null)
-        {
-            for (int i = 0; i < gameData.answers.Length; i++)
-            {
-                texts[i].gameObject.SetActive(gameData.answers[i]);
-            }
-            wasSaved = true;
-        }
+        /*        bool wasSaved = false;
+                if (gameData.answers != null)
+                {
+                    for (int i = 0; i < gameData.answers.Length; i++)
+                    {
+                        texts[i].gameObject.SetActive(gameData.answers[i]);
+                    }
+                    wasSaved = true;
+                }*/
 
         textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
         for (int i = 0, n = 0; i < answers.Length; i++, n++)
@@ -62,13 +62,7 @@ public class Words : MonoBehaviour
             {
                 textAnsw[i, j] = letters[j];
                 texts[n].text = textAnsw[i, j].ToString().ToUpper();
-                if (wasSaved)
-                {
-                    Debug.Log(n);
-                    texts[n].gameObject.SetActive(gameData.answers[n]);
-                }
-                else
-                    texts[n].gameObject.SetActive(false);
+                texts[n].gameObject.SetActive(false);
             }
         }
 
@@ -123,36 +117,36 @@ public class Words : MonoBehaviour
         }
     }
 
-/*    void LoadLetters()
-    {
-        answers = data.answers;
-
-        texts = panel.GetComponentsInChildren<Text>();
-        bool wasSaved = false;
-        if (gameData.answers != null)
+    /*    void LoadLetters()
         {
-            for (int i = 0; i < gameData.answers.Length; i++)
-            {
-                texts[i].gameObject.SetActive(gameData.answers[i]);
-            }
-            wasSaved = true;
-        }
+            answers = data.answers;
 
-        textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
-        for (int i = 0, n = 0; i < answers.Length; i++)
-        {
-            letters = answers[i].ToCharArray();
-            for (int j = 0; j < answers[i].Length; j++, n++)
+            texts = panel.GetComponentsInChildren<Text>();
+            bool wasSaved = false;
+            if (gameData.answers != null)
             {
-                textAnsw[i, j] = letters[j];
-                texts[n].text = textAnsw[i, j].ToString().ToUpper();
-                if (wasSaved)
-                    texts[n].gameObject.SetActive(gameData.answers[n]);
-                else
-                    texts[n].gameObject.SetActive(false);
+                for (int i = 0; i < gameData.answers.Length; i++)
+                {
+                    texts[i].gameObject.SetActive(gameData.answers[i]);
+                }
+                wasSaved = true;
             }
-        }
-    }*/
+
+            textAnsw = new char[answers.Length, answers[answers.Length - 1].Length];
+            for (int i = 0, n = 0; i < answers.Length; i++)
+            {
+                letters = answers[i].ToCharArray();
+                for (int j = 0; j < answers[i].Length; j++, n++)
+                {
+                    textAnsw[i, j] = letters[j];
+                    texts[n].text = textAnsw[i, j].ToString().ToUpper();
+                    if (wasSaved)
+                        texts[n].gameObject.SetActive(gameData.answers[n]);
+                    else
+                        texts[n].gameObject.SetActive(false);
+                }
+            }
+        }*/
 
     public void LoadFinalScreen()
     {

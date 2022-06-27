@@ -7,7 +7,7 @@ public class DataLoad
 {
     public static Data ReadFromJson(string fileName)
     {
-        using (StreamReader fs = new StreamReader($"jar:file://{Application.dataPath}!/Assets/Levels/1.json"))
+        using (StreamReader fs = new StreamReader($@"C:\Unity\Forest-of-arms\Forest of arms\Assets\Levels\{fileName}.json"))
         {
             return JsonUtility.FromJson<Data>(fs.ReadToEnd());
         }
